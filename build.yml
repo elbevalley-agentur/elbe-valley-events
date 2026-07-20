@@ -1,0 +1,65 @@
+name: Build & Publish Events ICS
+
+on:
+  schedule:
+    - cron: "0 4 * * *"      # taeglich 04:00 UTC
+  workflow_dispatch: {}       # manuell ausloesbar
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Abhaengigkeiten installieren
+        run: pip install -r requirements.txt
+
+      - name: Playwright installieren (nur wenn Prignitz aktiv)
+        if: ${{ vars.ENABLE_PRIGNITZ_HEADLESS == '1' }}
+        run: |
+          pip install playwright
+          playwright install --with-deps chromium
+
+      - name: Kalender erzeugen
+        env:
+          # Altmark (SAiNT/ET4): als Repository-Secrets hinterlegen
+          ALTMARK_ET4_EXPERIENCE: ${{ secrets.ALTMARK_ET4_EXPERIENCE }}
+          ALTMARK_ET4_LICENSEKEY: ${{ secrets.ALTMARK_ET4_LICENSEKEY }}
+          ALTMARK_ET4_QUERY: ${{ vars.ALTMARK_ET4_QUERY }}
+          # Prignitz (Headless): als Repository-Variable ENABLE_PRIGNITZ_HEADLESS=1
+          ENABLE_PRIGNITZ_HEADLESS: ${{ vars.ENABLE_PRIGNITZ_HEADLESS }}
+          EVENTS_MONTHS_AHEAD: "12"
+        run: |
+          mkdir -p public
+          cp -f web/index.html public/index.html 2>/dev/null || true
+          python scripts/build.py --output public/elbe-valley-events.ics
+          echo "Erzeugt am $(date -u)" > public/last-build.txt
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
