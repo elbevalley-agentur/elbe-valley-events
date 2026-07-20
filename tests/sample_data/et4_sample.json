@@ -1,0 +1,19 @@
+{
+  "count": 1,
+  "items": [
+    {
+      "type": "Event",
+      "global_id": "adf0fa76-f8f7-4238-983f-dd8e12d4571e",
+      "title": "Waldweihnacht auf Gut Mergenthau",
+      "category": "Brauchtum/Kultur",
+      "texts": [
+        {"rel": "teaser", "value": "Waldweihnacht mit Kunsthandwerker-Christkindlmarkt."},
+        {"rel": "details", "value": "Die Waldweihnacht auf Gut Mergenthau findet seit ueber 30 Jahren statt."}
+      ],
+      "address": {"street": "Mergenthau 1", "zip": "86438", "city": "Kissing", "country": "Deutschland"},
+      "geo": {"main": {"latitude": 48.314566, "longitude": 10.994601}},
+      "media_objects": [{"rel": "default", "url": "https://media.et4.de/demo/waldweihnacht.jpg"}],
+      "timeIntervals": [{"start": "2026-12-05T14:00:00+01:00", "end": "2026-12-05T20:00:00+01:00"}]
+    }
+  ]
+}

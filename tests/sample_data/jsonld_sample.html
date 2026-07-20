@@ -1,0 +1,31 @@
+<!-- Beispiel: schema.org/Event als JSON-LD (so liefern es viele Tourismus-/CMS-Seiten im gerenderten HTML) -->
+<html><head>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Event",
+      "name": "Tourismustag Altmark 2026",
+      "startDate": "2026-09-15T10:00:00+02:00",
+      "endDate": "2026-09-15T16:00:00+02:00",
+      "url": "https://www.altmark.de/veranstaltungen/tourismustag-altmark-2026/",
+      "description": "Fachtag fuer Tourismusakteure der Altmark.",
+      "location": {
+        "@type": "Place",
+        "name": "Uchtspringe",
+        "address": {
+          "@type": "PostalAddress",
+          "postalCode": "39599",
+          "addressLocality": "Stendal"
+        }
+      }
+    },
+    {
+      "@type": "WebPage",
+      "name": "Nicht-Event, muss ignoriert werden"
+    }
+  ]
+}
+</script>
+</head><body></body></html>
