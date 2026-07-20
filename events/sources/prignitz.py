@@ -56,6 +56,8 @@ class PrignitzSource(BaseSource):
         for ev in root.findall(".//EVENT"):
             if self.region_filter and _txt(ev, "REGION_NAME_D") != self.region_filter:
                 continue
+            if _txt(ev, "E_NONTOURISTIC") == "1":
+                continue  # nicht-touristische Eintraege ausblenden
             title = _txt(ev, "E_TITEL")
             von_d = _txt(ev, "E_DATUM_VON")
             bis_d = _txt(ev, "E_DATUM_BIS")
