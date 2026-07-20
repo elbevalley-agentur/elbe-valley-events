@@ -58,8 +58,14 @@ def build_calendar(events: List[Event], name: str = "Elbe Valley Veranstaltungen
 
         if ev.url:
             ie.add("url", ev.url)
-        if ev.category:
-            ie.add("categories", [ev.category])
+        # Kategorien = Region + Art (fuer die Filter im Kalender)
+        cats = []
+        for c in (ev.region, ev.category):
+            c = (c or "").strip()
+            if c and c not in cats:
+                cats.append(c)
+        if cats:
+            ie.add("categories", cats)
         cal.add_component(ie)
     return cal
 
